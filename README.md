@@ -26,6 +26,6 @@ y = max number of generations
 
 A dynamic mutation rate was chosen as during earlier generations a higher cover rate of all posible boxes is optimal so that the genetic algorithm doesn't focus in on a local maxima (height). While in later generations mutation can slow optimisation of the gene pool.
 
-After the next generation is created the algorithm skips back to step (4) This happens as many times as the user specified generations.
+6. After the next generation is created the algorithm skips back to step (4) This happens as many times as the user specified generations.
 
-After the final generation is created the tallest tower from the final generation is printed to console
+7. After the final generation is created the tallest tower from the final generation is printed to console
