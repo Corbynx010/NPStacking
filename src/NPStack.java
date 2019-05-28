@@ -8,12 +8,13 @@ import java.util.UUID;
 public class NPStack {
 	static String filepath;
 	static int generations;
+	static int currentGeneration = 0;
 	static int populationSize;
 	static ArrayList<Box> values = new ArrayList<Box>();
 	
 	public static void main(String[] args) {
 		if (args.length != 3) {
-			//error
+			System.out.println("Please use \"NPStack filepath generationCount populationPerGeneration\"");
 		}
 		else {
 			filepath = args[0];
@@ -41,6 +42,7 @@ public class NPStack {
 		Tower[] population = initialPopulation();
 		for(int i = 0; i < generations; i++) {
 			Tower[] parents = getBestParents(population);	//0 is best
+			currentGeneration++;
 			population = newGeneration(parents);
 		}
 		Tower[] parents = getBestParents(population);	//0 is best
@@ -82,8 +84,9 @@ public class NPStack {
 		Tower child = new Tower();
 		while(parent0.size() > 0 || parent1.size() > 0) {
 			int randParent = r.nextInt(2);
-			int randMutate = r.nextInt(50); 
-			if(randMutate == 1) {	//mutate with ~2% chance
+			double mutationRate = (1.05-(currentGeneration/generations))*4;
+			int randMutate = r.nextInt((int)Math.round(100/mutationRate)); 
+			if(randMutate == 1) {	//mutate with decreasing chance per generation 4.2%-0.2% chance
 				int mutation = r.nextInt(values.size());
 				if(!child.boxInTower(values.get(mutation))) {
 					child.addBox(values.get(mutation));
@@ -361,11 +364,6 @@ public class NPStack {
 				}
 				catch(BoxNotFitException bnfe) {}
 			}
-			//try {
-			//	Box newTopBox = Box.canFitAbove(b, boxes.get(boxes.size() - 1));
-			//	boxes.add(boxes.size(), newTopBox);
-			//	height += newTopBox.z;
-			//} catch (BoxNotFitException e) {}
 		}
 		
 		public boolean boxInTower(Box b) {
